@@ -1,0 +1,57 @@
+﻿@model IEnumerable<LibraryClearance.Models.ClearanceRequest>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<LibraryClearance.Models.ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Copyright Clearance Requests";
+    var user = await UserManager.GetUserAsync(User);
+    var isAdmin = await UserManager.IsInRoleAsync(user, "Admin");
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (!isAdmin)
+{
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Submit New Request</a>
+    </p>
+}
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Requester</th>
+                <th>Status</th>
+                <th>Submitted Date</th>
+                <th>Last Updated</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                    <td>@Html.DisplayFor(modelItem => item.RequesterName)</td>
+                    <td>
+                        <span class="badge bg-@(item.Status == RequestStatus.Approved ? "success" : 
+                                               item.Status == RequestStatus.Rejected ? "danger" : "warning")">
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </span>
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.SubmittedDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.LastUpdated)</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Details</a>
+                        @if (isAdmin && item.Status == RequestStatus.Pending)
+                        {
+                            <a asp-action="Review" asp-route-id="@item.Id" class="btn btn-sm btn-success">Review</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

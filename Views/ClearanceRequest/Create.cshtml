@@ -1,0 +1,346 @@
+﻿@model LibraryClearance.Models.ClearanceRequest
+
+@{
+    ViewData["Title"] = "Submit Copyright Clearance Request";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5>Request Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group mb-3">
+                        <label asp-for="Title" class="form-label"></label>
+                        <input asp-for="Title" class="form-control" placeholder="Enter a descriptive title for your request" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="Campus" class="form-label"></label>
+                                <select asp-for="Campus" class="form-select">
+                                    <option value="">Select Campus</option>
+                                    <option value="Main Campus">Main Campus</option>
+                                    <option value="North Campus">North Campus</option>
+                                    <option value="South Campus">South Campus</option>
+                                    <option value="Online">Online</option>
+                                </select>
+                                <span asp-validation-for="Campus" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="Department" class="form-label"></label>
+                                <input asp-for="Department" class="form-control" placeholder="e.g., Computer Science, English, Biology" />
+                                <span asp-validation-for="Department" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="RequesterName" class="form-label"></label>
+                                <input asp-for="RequesterName" class="form-control" />
+                                <span asp-validation-for="RequesterName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="Email" class="form-label"></label>
+                                <input asp-for="Email" type="email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mb-3">
+                        <label asp-for="Extension" class="form-label"></label>
+                        <input asp-for="Extension" class="form-control" placeholder="Phone extension (optional)" />
+                        <span asp-validation-for="Extension" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5>User Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group mb-3">
+                        <label asp-for="UserCategory" class="form-label"></label>
+                        <select asp-for="UserCategory" class="form-select" id="userCategorySelect">
+                            <option value="">Select User Category</option>
+                            <option value="Faculty">Faculty</option>
+                            <option value="Staff">Staff</option>
+                            <option value="Student">Student</option>
+                            <option value="Researcher">Researcher</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span asp-validation-for="UserCategory" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group mb-3" id="otherUserCategoryDiv" style="display: none;">
+                        <label asp-for="OtherUserCategory" class="form-label"></label>
+                        <input asp-for="OtherUserCategory" class="form-control" placeholder="Please specify your user category" />
+                        <span asp-validation-for="OtherUserCategory" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5>Usage Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group mb-3">
+                        <label asp-for="ClearancePurpose" class="form-label"></label>
+                        <select asp-for="ClearancePurpose" class="form-select" id="clearancePurposeSelect">
+                            <option value="">Select Clearance Purpose</option>
+                            <option value="Teaching">Teaching</option>
+                            <option value="Research">Research</option>
+                            <option value="Publication">Publication</option>
+                            <option value="Thesis/Dissertation">Thesis/Dissertation</option>
+                            <option value="Conference Presentation">Conference Presentation</option>
+                            <option value="Course Materials">Course Materials</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span asp-validation-for="ClearancePurpose" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group mb-3" id="otherClearancePurposeDiv" style="display: none;">
+                        <label asp-for="OtherClearancePurpose" class="form-label"></label>
+                        <input asp-for="OtherClearancePurpose" class="form-control" placeholder="Please specify the clearance purpose" />
+                        <span asp-validation-for="OtherClearancePurpose" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group mb-3">
+                        <label asp-for="UseOfContent" class="form-label"></label>
+                        <select asp-for="UseOfContent" class="form-select" id="useOfContentSelect">
+                            <option value="">Select Use of Content</option>
+                            <option value="Full Article">Full Article</option>
+                            <option value="Partial Content">Partial Content</option>
+                            <option value="Figures/Tables Only">Figures/Tables Only</option>
+                            <option value="Abstract Only">Abstract Only</option>
+                            <option value="Citations/References">Citations/References</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span asp-validation-for="UseOfContent" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group mb-3" id="otherUseOfContentDiv" style="display: none;">
+                        <label asp-for="OtherUseOfContent" class="form-label"></label>
+                        <input asp-for="OtherUseOfContent" class="form-control" placeholder="Please specify how you will use the content" />
+                        <span asp-validation-for="OtherUseOfContent" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group mb-3">
+                        <label asp-for="Duration" class="form-label"></label>
+                        <select asp-for="Duration" class="form-select" id="durationSelect">
+                            <option value="">Select Duration</option>
+                            <option value="One-time use">One-time use</option>
+                            <option value="One semester">One semester</option>
+                            <option value="One academic year">One academic year</option>
+                            <option value="Permanent">Permanent</option>
+                            <option value="Until further notice">Until further notice</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span asp-validation-for="Duration" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group mb-3" id="otherDurationDiv" style="display: none;">
+                        <label asp-for="OtherDuration" class="form-label"></label>
+                        <input asp-for="OtherDuration" class="form-control" placeholder="Please specify the duration" />
+                        <span asp-validation-for="OtherDuration" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5>Article/Publication Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group mb-3">
+                        <label asp-for="ArticleTitle" class="form-label"></label>
+                        <input asp-for="ArticleTitle" class="form-control" placeholder="Full title of the article" />
+                        <span asp-validation-for="ArticleTitle" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group mb-3">
+                        <label asp-for="Authors" class="form-label"></label>
+                        <textarea asp-for="Authors" class="form-control" rows="2" placeholder="List all authors (separate with commas)"></textarea>
+                        <span asp-validation-for="Authors" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group mb-3">
+                        <label asp-for="JournalTitle" class="form-label"></label>
+                        <input asp-for="JournalTitle" class="form-control" placeholder="Name of the journal or publication" />
+                        <span asp-validation-for="JournalTitle" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label asp-for="Volume" class="form-label"></label>
+                                <input asp-for="Volume" class="form-control" placeholder="Volume number" />
+                                <span asp-validation-for="Volume" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label asp-for="Issue" class="form-label"></label>
+                                <input asp-for="Issue" class="form-control" placeholder="Issue number" />
+                                <span asp-validation-for="Issue" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group mb-3">
+                                <label asp-for="PageNumber" class="form-label"></label>
+                                <input asp-for="PageNumber" class="form-control" placeholder="e.g., 123-145" />
+                                <span asp-validation-for="PageNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="PublicationYear" class="form-label"></label>
+                                <input asp-for="PublicationYear" class="form-control" placeholder="Publication year" />
+                                <span asp-validation-for="PublicationYear" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="Publisher" class="form-label"></label>
+                                <input asp-for="Publisher" class="form-control" placeholder="Publisher name" />
+                                <span asp-validation-for="Publisher" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="Doi" class="form-label"></label>
+                                <input asp-for="Doi" class="form-control" placeholder="Digital Object Identifier (if available)" />
+                                <span asp-validation-for="Doi" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label asp-for="Url" class="form-label"></label>
+                                <input asp-for="Url" type="url" class="form-control" placeholder="URL to the article (if available)" />
+                                <span asp-validation-for="Url" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Submit Request" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Request Guidelines</h5>
+            </div>
+            <div class="card-body">
+                <h6>Before Submitting:</h6>
+                <ul>
+                    <li>Ensure you have complete bibliographic information</li>
+                    <li>Consider if your use qualifies as fair use</li>
+                    <li>Allow adequate time for processing (typically 2-4 weeks)</li>
+                    <li>Check if the material is already available in the library</li>
+                </ul>
+                
+                <h6>Required Information:</h6>
+                <ul>
+                    <li>Complete article and journal details</li>
+                    <li>Clear purpose for usage</li>
+                    <li>Specific content portions needed</li>
+                    <li>Duration of intended use</li>
+                </ul>
+                
+                <div class="alert alert-info mt-3">
+                    <small>
+                        <strong>Note:</strong> Your request will be reviewed and processed by the library copyright team. You will receive email updates on the status of your request.
+                    </small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5>Need Help?</h5>
+            </div>
+            <div class="card-body">
+                <p><small>Contact the Copyright Office:</small></p>
+                <ul class="list-unstyled">
+                    <li><small><i class="fas fa-envelope"></i> copyright@library.edu</small></li>
+                    <li><small><i class="fas fa-phone"></i> (555) 123-4567</small></li>
+                    <li><small><i class="fas fa-clock"></i> Mon-Fri, 9AM-5PM</small></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        $(document).ready(function() {
+            // Show/hide "Other" input fields based on dropdown selection
+            $('#userCategorySelect').change(function() {
+                if ($(this).val() === 'Other') {
+                    $('#otherUserCategoryDiv').show();
+                } else {
+                    $('#otherUserCategoryDiv').hide();
+                    $('#OtherUserCategory').val('');
+                }
+            });
+            
+            $('#clearancePurposeSelect').change(function() {
+                if ($(this).val() === 'Other') {
+                    $('#otherClearancePurposeDiv').show();
+                } else {
+                    $('#otherClearancePurposeDiv').hide();
+                    $('#OtherClearancePurpose').val('');
+                }
+            });
+            
+            $('#useOfContentSelect').change(function() {
+                if ($(this).val() === 'Other') {
+                    $('#otherUseOfContentDiv').show();
+                } else {
+                    $('#otherUseOfContentDiv').hide();
+                    $('#OtherUseOfContent').val('');
+                }
+            });
+            
+            $('#durationSelect').change(function() {
+                if ($(this).val() === 'Other') {
+                    $('#otherDurationDiv').show();
+                } else {
+                    $('#otherDurationDiv').hide();
+                    $('#OtherDuration').val('');
+                }
+            });
+        });
+    </script>
+}
