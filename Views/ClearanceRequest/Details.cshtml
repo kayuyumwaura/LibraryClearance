@@ -1,0 +1,185 @@
+﻿@model LibraryClearance.Models.ClearanceRequest
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<LibraryClearance.Models.ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Request Details";
+    var user = await UserManager.GetUserAsync(User);
+    var isAdmin = user != null && await UserManager.IsInRoleAsync(user, "Admin");
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-3">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>@Html.DisplayFor(model => model.Title)</h5>
+                <span class="badge bg-@(Model.Status == LibraryClearance.Models.RequestStatus.Approved ? "success" : 
+                                       Model.Status == LibraryClearance.Models.RequestStatus.Rejected ? "danger" : "warning") fs-6">
+                    @Html.DisplayFor(model => model.Status)
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.RequesterName)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.RequesterName)</dd>
+                            
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Email)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.Email)</dd>
+                            
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Campus)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.Campus)</dd>
+                            
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Department)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.Department)</dd>
+                            
+                            <dt class="col-sm-4">Extension</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.Extension)</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.UserCategory)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.UserCategory)</dd>
+                            
+                            @if (!string.IsNullOrEmpty(Model.OtherUserCategory))
+                            {
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.OtherUserCategory)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.OtherUserCategory)</dd>
+                            }
+                            
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.ClearancePurpose)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.ClearancePurpose)</dd>
+                            
+                            @if (!string.IsNullOrEmpty(Model.OtherClearancePurpose))
+                            {
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.OtherClearancePurpose)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.OtherClearancePurpose)</dd>
+                            }
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Usage Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.UseOfContent)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.UseOfContent)</dd>
+                            
+                            @if (!string.IsNullOrEmpty(Model.OtherUseOfContent))
+                            {
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.OtherUseOfContent)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.OtherUseOfContent)</dd>
+                            }
+                        </dl>
+                    </div>
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Duration)</dt>
+                            <dd class="col-sm-8">@Html.DisplayFor(model => model.Duration)</dd>
+                            
+                            @if (!string.IsNullOrEmpty(Model.OtherDuration))
+                            {
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.OtherDuration)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.OtherDuration)</dd>
+                            }
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Article Information</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.ArticleTitle)</dt>
+                    <dd class="col-sm-10">@Html.DisplayFor(model => model.ArticleTitle)</dd>
+                    
+                    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Authors)</dt>
+                    <dd class="col-sm-10">@Html.DisplayFor(model => model.Authors)</dd>
+                    
+                    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.JournalTitle)</dt>
+                    <dd class="col-sm-10">@Html.DisplayFor(model => model.JournalTitle)</dd>
+                    
+                    <dt class="col-sm-2">Volume/Issue</dt>
+                    <dd class="col-sm-10">Vol. @Html.DisplayFor(model => model.Volume), Issue @Html.DisplayFor(model => model.Issue)</dd>
+                    
+                    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.PageNumber)</dt>
+                    <dd class="col-sm-10">@Html.DisplayFor(model => model.PageNumber)</dd>
+                    
+                    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.PublicationYear)</dt>
+                    <dd class="col-sm-10">@Html.DisplayFor(model => model.PublicationYear)</dd>
+                    
+                    <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Publisher)</dt>
+                    <dd class="col-sm-10">@Html.DisplayFor(model => model.Publisher)</dd>
+                    
+                    @if (!string.IsNullOrEmpty(Model.Doi))
+                    {
+                        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Doi)</dt>
+                        <dd class="col-sm-10">@Html.DisplayFor(model => model.Doi)</dd>
+                    }
+                    
+                    @if (!string.IsNullOrEmpty(Model.Url))
+                    {
+                        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.Url)</dt>
+                        <dd class="col-sm-10"><a href="@Model.Url" target="_blank">@Html.DisplayFor(model => model.Url)</a></dd>
+                    }
+                </dl>
+            </div>
+        </div>
+        
+        @if (!string.IsNullOrEmpty(Model.AdminComments))
+        {
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5>Admin Comments</h5>
+                </div>
+                <div class="card-body">
+                    <p>@Html.DisplayFor(model => model.AdminComments)</p>
+                </div>
+            </div>
+        }
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Request Status</h5>
+            </div>
+            <div class="card-body">
+                <dl>
+                    <dt>@Html.DisplayNameFor(model => model.SubmittedDate)</dt>
+                    <dd>@Html.DisplayFor(model => model.SubmittedDate)</dd>
+                    
+                    @if (Model.LastUpdated.HasValue)
+                    {
+                        <dt>@Html.DisplayNameFor(model => model.LastUpdated)</dt>
+                        <dd>@Html.DisplayFor(model => model.LastUpdated)</dd>
+                    }
+                </dl>
+                
+                @if (isAdmin && Model.Status == LibraryClearance.Models.RequestStatus.Pending)
+                {
+                    <a asp-action="Review" asp-route-id="@Model.Id" class="btn btn-success">Review Request</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>

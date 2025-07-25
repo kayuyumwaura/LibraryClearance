@@ -5,7 +5,7 @@
 @{
     ViewData["Title"] = "Copyright Clearance Requests";
     var user = await UserManager.GetUserAsync(User);
-    var isAdmin = await UserManager.IsInRoleAsync(user, "Admin");
+    var isAdmin = user != null && await UserManager.IsInRoleAsync(user, "Admin");
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -36,8 +36,8 @@
                     <td>@Html.DisplayFor(modelItem => item.Title)</td>
                     <td>@Html.DisplayFor(modelItem => item.RequesterName)</td>
                     <td>
-                        <span class="badge bg-@(item.Status == RequestStatus.Approved ? "success" : 
-                                               item.Status == RequestStatus.Rejected ? "danger" : "warning")">
+                        <span class="badge bg-@(item.Status == LibraryClearance.Models.RequestStatus.Approved ? "success" : 
+                                               item.Status == LibraryClearance.Models.RequestStatus.Rejected ? "danger" : "warning")">
                             @Html.DisplayFor(modelItem => item.Status)
                         </span>
                     </td>
@@ -45,7 +45,7 @@
                     <td>@Html.DisplayFor(modelItem => item.LastUpdated)</td>
                     <td>
                         <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Details</a>
-                        @if (isAdmin && item.Status == RequestStatus.Pending)
+                        @if (isAdmin && item.Status == LibraryClearance.Models.RequestStatus.Pending)
                         {
                             <a asp-action="Review" asp-route-id="@item.Id" class="btn btn-sm btn-success">Review</a>
                         }

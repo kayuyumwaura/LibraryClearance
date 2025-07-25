@@ -5,20 +5,19 @@ namespace LibraryClearance.Data
 {
     public static class SeedData
     {
-        public static async Task Initialize(IServiceProvider serviceProvider)
+        public static async Task Initialize(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
-            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-
             // Create roles
-            if (!await roleManager.RoleExistsAsync("Admin"))
-            {
-                await roleManager.CreateAsync(new IdentityRole("Admin"));
-            }
+            string[] roleNames = { "Admin", "User" };
+            IdentityResult roleResult;
 
-            if (!await roleManager.RoleExistsAsync("User"))
+            foreach (var roleName in roleNames)
             {
-                await roleManager.CreateAsync(new IdentityRole("User"));
+                var roleExist = await roleManager.RoleExistsAsync(roleName);
+                if (!roleExist)
+                {
+                    roleResult = await roleManager.CreateAsync(new IdentityRole(roleName));
+                }
             }
 
             // Create admin user
@@ -35,9 +34,14 @@ namespace LibraryClearance.Data
                     EmailConfirmed = true
                 };
 
-                await userManager.CreateAsync(adminUser, "Admin123!");
-                await userManager.AddToRoleAsync(adminUser, "Admin");
+                var createResult = await userManager.CreateAsync(adminUser, "Admin123!");
+                if (createResult.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(adminUser, "Admin");
+                }
             }
         }
     }
 }
+
+
