@@ -31,34 +31,34 @@ namespace LibraryClearance.Models
         [EmailAddress]
         public string Email { get; set; }
 
-        public string Extension { get; set; }
+        public string? Extension { get; set; }
 
         [Required]
         [Display(Name = "User Category")]
         public string UserCategory { get; set; }
 
         [Display(Name = "Other User Category (if applicable)")]
-        public string OtherUserCategory { get; set; }
+        public string? OtherUserCategory { get; set; }
 
         [Required]
         [Display(Name = "Clearance Purpose")]
         public string ClearancePurpose { get; set; }
 
         [Display(Name = "Other Clearance Purpose (if applicable)")]
-        public string OtherClearancePurpose { get; set; }
+        public string? OtherClearancePurpose { get; set; }
 
         [Required]
         [Display(Name = "Use of Content")]
         public string UseOfContent { get; set; }
 
         [Display(Name = "Other Use of Content (if applicable)")]
-        public string OtherUseOfContent { get; set; }
+        public string? OtherUseOfContent { get; set; }
 
         [Required]
         public string Duration { get; set; }
 
         [Display(Name = "Other Duration (if applicable)")]
-        public string OtherDuration { get; set; }
+        public string? OtherDuration { get; set; }
 
         [Required]
         [Display(Name = "Article Title")]
@@ -96,6 +96,7 @@ namespace LibraryClearance.Models
         [Display(Name = "Admin Comments")]
         public string AdminComments { get; set; }
 
+        [Required]
         [Display(Name = "Submitted Date")]
         public DateTime SubmittedDate { get; set; } = DateTime.Now;
 
